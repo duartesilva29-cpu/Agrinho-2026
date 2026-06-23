@@ -214,4 +214,220 @@
     });
   </script>
 </body>
+</html><!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agro Forte, Futuro Sustentável</title>
+  <style>
+    :root{
+      --verde: #2e7d32;
+      --bg: #f4f9f4;
+      --card: #ffffff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      line-height:1.6;
+      background:var(--bg);
+      color:#222;
+      padding:20px;
+    }
+    header{
+      background:var(--verde);
+      color:#fff;
+      padding:20px;
+      text-align:center;
+      border-radius:8px;
+      margin-bottom:18px;
+    }
+    main{max-width:1100px;margin:0 auto;padding:10px}
+    footer{ text-align:center; margin-top:40px; font-size:0.8em; color:#666; }
+
+    /* galeria */
+    .galeria h2{margin-top:0}
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:16px;
+      margin-top:12px;
+    }
+    figure{
+      background:var(--card);
+      border-radius:8px;
+      padding:12px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.06);
+      text-align:center;
+      margin:0;
+    }
+    .card-img{
+      width:100%;
+      height:180px;
+      object-fit:cover;
+      border-radius:6px;
+      display:block;
+      margin-bottom:8px;
+    }
+    figcaption{ font-size:0.95rem; color:#444; margin-bottom:8px; }
+
+    .btn, #trocar{
+      background:var(--verde);
+      color:#fff;
+      border:none;
+      padding:8px 12px;
+      border-radius:6px;
+      cursor:pointer;
+      font-size:0.95rem;
+    }
+    .controls{margin-top:12px}
+
+    /* modal */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,0.6);
+      z-index:1000;
+    }
+    .modal[aria-hidden="false"]{display:flex}
+    .modal-content{
+      background:#fff;
+      padding:12px;
+      border-radius:8px;
+      max-width:90%;
+      max-height:90%;
+      text-align:center;
+      position:relative;
+      overflow:auto;
+    }
+    .modal-content img{ max-width:100%; height:auto; display:block; margin:0 auto 10px; }
+    .close{
+      position:absolute;
+      top:8px;
+      right:8px;
+      background:transparent;
+      border:none;
+      font-size:1.6rem;
+      cursor:pointer;
+    }
+
+    /* responsividade extra */
+    @media (max-width:480px){
+      .card-img{ height:140px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Agro forte, futuro sustentável</h1>
+    <p>Equilíbrio entre produção e meio ambiente</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Sobre o Projeto</h2>
+      <p>O Agrinho 2026 busca mostrar como a tecnologia no campo pode caminhar lado a lado com a preservação dos nossos recursos naturais, garantindo alimento e um planeta saudável.</p>
+    </section>
+
+    <!-- Galeria: cole suas imagens na pasta assets como imagem1.jpg e imagem2.jpg -->
+    <section class="galeria" aria-labelledby="galeria-title">
+      <h2 id="galeria-title">Imagens geradas por IA</h2>
+
+      <div class="cards">
+        <figure>
+          <img src="assets/imagem1.jpg" alt="Campo sustentável com painéis solares e vegetação nativa" loading="lazy" class="card-img" id="img1">
+          <figcaption>Campo sustentável com painéis solares</figcaption>
+          <button class="btn" data-target="img1">Ampliar</button>
+        </figure>
+
+        <figure>
+          <img src="assets/imagem2.jpg" alt="Agricultura de precisão com drone monitorando plantações" loading="lazy" class="card-img" id="img2">
+          <figcaption>Agricultura de precisão com drone</figcaption>
+          <button class="btn" data-target="img2">Ampliar</button>
+        </figure>
+      </div>
+
+      <div class="controls">
+        <button id="trocar">Trocar imagens</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal simples -->
+  <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-content" role="document">
+      <button id="fechar" class="close" aria-label="Fechar">×</button>
+      <img id="modal-img" src="" alt="">
+      <p id="modal-caption"></p>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 - Projeto Agrinho - Desenvolvido com foco na sustentabilidade</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('modal');
+      const modalImg = document.getElementById('modal-img');
+      const modalCaption = document.getElementById('modal-caption');
+      const fechar = document.getElementById('fechar');
+
+      // abrir modal ao clicar em "Ampliar"
+      document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-target');
+          const img = document.getElementById(targetId);
+          modalImg.src = img.src;
+          modalImg.alt = img.alt;
+          modalCaption.textContent = img.nextElementSibling ? img.nextElementSibling.textContent : '';
+          modal.setAttribute('aria-hidden', 'false');
+        });
+      });
+
+      // fechar modal
+      fechar.addEventListener('click', closeModal);
+
+      // fechar ao clicar fora do conteúdo
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      // fechar com Esc
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+      });
+
+      function closeModal(){
+        modal.setAttribute('aria-hidden', 'true');
+        modalImg.src = '';
+        modalCaption.textContent = '';
+      }
+
+      // botão para trocar as imagens (exemplo simples)
+      document.getElementById('trocar').addEventListener('click', () => {
+        const img1 = document.getElementById('img1');
+        const img2 = document.getElementById('img2');
+
+        const srcTemp = img1.src;
+        const altTemp = img1.alt;
+        const cap1 = img1.nextElementSibling ? img1.nextElementSibling.textContent : '';
+        const cap2 = img2.nextElementSibling ? img2.nextElementSibling.textContent : '';
+
+        img1.src = img2.src;
+        img1.alt = img2.alt;
+        if(img1.nextElementSibling) img1.nextElementSibling.textContent = cap2;
+
+        img2.src = srcTemp;
+        img2.alt = altTemp;
+        if(img2.nextElementSibling) img2.nextElementSibling.textContent = cap1;
+      });
+    });
+  </script>
+</body>
 </html>
